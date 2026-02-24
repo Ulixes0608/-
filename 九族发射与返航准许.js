@@ -1,0 +1,55 @@
+// ==UserScript==
+// @name         九族发射与返航准许
+// @author       Ulixes
+// @version      1.0.0
+// @description  允许发射和返航某人，可用.发射<名字>发射对应对象，和.允许返航<名字>来让其返航
+// @timestamp    1771782884
+// 2026-02-22
+// @license      Apache-2
+// ==/UserScript==
+
+let ext = seal.ext.find('fly');
+if (!ext) {
+  ext = seal.ext.new('fly', 'Ulixes', '1.0.0');
+  seal.ext.register(ext);
+}
+
+const cmdfly = seal.ext.newCmdItemInfo();
+cmdfly.name = '发射'; 
+cmdfly.help = '允许发射和返航某人，可用.发射<名字>发射对应对象，和.允许返航<名字>来让其返航';
+cmdfly.solve = (ctx, msg, cmdArgs) => {
+  let val = cmdArgs.getArgN(1);
+  switch (val) {
+    case 'help': {
+      const ret = seal.ext.newCmdExecuteResult(true);
+      ret.showHelp = true;
+      return ret;
+    }
+    default: {
+      if (!val) val = '金智勋';
+      seal.replyToSender(ctx, msg, `九泉发射基地总部已批准你的请求！我们会立马发射${val}，对方将绕地球${Math.ceil(Math.random() * 100)}圈！`);
+      return seal.ext.newCmdExecuteResult(true);
+    }
+  }
+};
+const cmdback = seal.ext.newCmdItemInfo();
+cmdback.name = '允许返航'; 
+cmdback.help = '允许发射和返航某人，可用.发射<名字>发射对应对象，和.允许返航<名字>来让其返航';
+cmdback.solve = (ctx, msg, cmdArgs) => {
+  let val = cmdArgs.getArgN(1);
+  switch (val) {
+    case 'help': {
+      const ret = seal.ext.newCmdExecuteResult(true);
+      ret.showHelp = true;
+      return ret;
+    }
+    default: {
+      if (!val) val = '金智勋';
+      seal.replyToSender(ctx, msg, `九泉发射基地总部已收到你的请求！允许${val}返航！`);
+      return seal.ext.newCmdExecuteResult(true);
+    }
+  }
+};
+
+ext.cmdMap['发射'] = cmdfly;  
+ext.cmdMap['允许返航'] = cmdback;
